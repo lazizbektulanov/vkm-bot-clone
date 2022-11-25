@@ -1,7 +1,6 @@
 package com.musicbot.musicbot.controller;
 
 
-import com.musicbot.musicbot.service.BotService;
 import com.musicbot.musicbot.service.WebHookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,6 +1,5 @@
 package com.musicbot.musicbot.service;
 
-import com.musicbot.musicbot.feign.TelegramFeign;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -9,8 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class WebHookService {
 
-    private final TelegramFeign telegramFeign;
-
     private final BotService botService;
 
     public void waitUpdate(Update update) {
@@ -18,15 +15,25 @@ public class WebHookService {
             if (update.getMessage().hasText()) {
                 switch (update.getMessage().getText()) {
                     case "/start":
-                        botService.whenStart(update);
+                        botService.start(update);
                         break;
                     default:
-                        botService.searchMusic(update);
+                        botService.sendSearchResults(update, 0);
                         break;
                 }
+            } else if (update.getMessage().hasAudio()) {
+                botService.uploadMusic(update);
             }
-            else if(update.getMessage().hasAudio()){
-                botService.saveMusic(update);
+        } else if (update.hasCallbackQuery()) {
+            String callBackData = update.getCallbackQuery().getData();
+            if (callBackData.startsWith("DOWNLOAD")) {
+                botService.downloadMusic(update);
+            } else if (callBackData.startsWith("DELETE")) {
+                botService.deleteMessage(update);
+            } else if (callBackData.startsWith("PREVIOUS")) {
+                botService.getPreviousPage(update);
+            } else if (callBackData.startsWith("NEXT")) {
+                botService.getNextPage(update);
             }
         }
     }

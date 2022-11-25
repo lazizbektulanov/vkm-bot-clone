@@ -26,20 +26,41 @@ public class Music {
 
     private String fileUniqueId;
 
-    private String musicName;
+    private String fileName;
 
-    private String uploadedFrom;
+    private Long fileSize;
+
+    private Long uploaderId;
+
+    private Integer duration;
+
+    private String performer;
+
+    private String title;
+
+    private String mimeType;
+
+    private Long downloadCount = 1L;
 
     @OrderBy
     @CreationTimestamp
-    @Column(nullable = false,updatable = false)
+    @Column(nullable = false, updatable = false)
     private Timestamp uploadedAt;
 
-    public Music(String fileId, String fileUniqueId, String musicName, String uploadedFrom) {
+    public Music(String fileId, String fileUniqueId,
+                 String fileName, Long fileSize,
+                 Long uploaderId, Integer duration,
+                 String performer, String title,
+                 String mimeType) {
         this.fileId = fileId;
         this.fileUniqueId = fileUniqueId;
-        this.musicName = musicName;
-        this.uploadedFrom = uploadedFrom;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.uploaderId = uploaderId;
+        this.duration = duration;
+        this.performer = performer;
+        this.title = title;
+        this.mimeType = mimeType;
     }
 
     @Override
